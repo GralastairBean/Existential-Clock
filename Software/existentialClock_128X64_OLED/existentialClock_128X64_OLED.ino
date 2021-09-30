@@ -58,17 +58,19 @@ void updateAge() {
   //Set the color - always use white despite actual display color
   display.setTextColor(WHITE);
   //Set the font size
-  display.setTextSize(1);
+  display.setTextSize(2);
   //Set the cursor coordinates
   display.setCursor(0, 0);
-  display.print("EXISTENTIAL CLOCK v2");
-  display.setCursor(0, 10);
-  display.print("time: ");
-  display.print(hoursLeft, 0);
-  display.setCursor(0, 20);
-  display.print("pct: ");
+  //display.print("EXISTENTIAL CLOCK v2");
+  display.setCursor(10, 0);
+  //display.print("time: ");
+  //display.setCursor(0, 16);
+  //display.print(hoursLeft, 0);
+  //display.setCursor(0, 32);
+  display.print("Pct Lived");
+  display.setCursor(10, 32);
   display.print(pct, 5);
-  display.print(" %");
+  display.print("%");
 
   Serial.print("age:  ");
   Serial.print(age, 0);
@@ -77,7 +79,7 @@ void updateAge() {
   Serial.print("  hoursLeft:  ");
   Serial.print(hoursLeft, 0);
   Serial.print("  pct:  ");
-  Serial.print(pct, 7);
+  Serial.print(pct, 6);
   Serial.println("%");
 }
 void loop() {
