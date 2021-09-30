@@ -12,18 +12,22 @@
 */
 
 // Include Wire Library for I2C
+#include <SPI.h>
 #include <Wire.h>
-
-// Include Adafruit Graphics & OLED libraries
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
-
-// Reset pin not used but needed for library
-#define OLED_RESET 4
-Adafruit_SSD1306 display(OLED_RESET);
-
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+// The pins for I2C are defined by the Wire-library. 
+// On an arduino UNO:       A4(SDA), A5(SCL)
+// On an arduino MEGA 2560: 20(SDA), 21(SCL)
+// On an arduino LEONARDO:   2(SDA),  3(SCL), ...
+#define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_ADDRESS 0x3c ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 double age = 276936; //31 years = 271560 hours, round to 270000
 double lifeExp = 713064; //81.4 years = 713064 hours
 double hoursLeft = lifeExp - age;
@@ -54,7 +58,7 @@ void updateAge() {
   //Set the color - always use white despite actual display color
   display.setTextColor(WHITE);
   //Set the font size
-  display.setTextSize(0.5);
+  display.setTextSize(1);
   //Set the cursor coordinates
   display.setCursor(0, 0);
   display.print("EXISTENTIAL CLOCK v2");
