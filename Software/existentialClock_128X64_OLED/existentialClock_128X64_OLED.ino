@@ -15,9 +15,9 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
+//Setup OLED using Adafruit GFX Graphics Library
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
-
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 // The pins for I2C are defined by the Wire-library. 
 // On an arduino UNO:       A4(SDA), A5(SCL)
@@ -26,6 +26,8 @@
 #define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
 #define SCREEN_ADDRESS 0x3c ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+//Existential life expectancy calculations
 double age = 276936; //31 years = 271560 hours, round to 270000
 double lifeExp = 713064; //81.4 years = 713064 hours
 double hoursLeft = lifeExp - age;
@@ -34,23 +36,16 @@ unsigned long intervalMillis = 1000; // number of millisecs between updating "ag
 unsigned long currentMillis = 0;    // stores the value of millis() in each iteration of loop()
 unsigned long previousMillis = 0;   // will store last time "age" was updated
 
-
-
 void setup() {
-
+  // Start debug Serial
   Serial.begin(9600);
   // Start Wire library for I2C
   Wire.begin();
-
-
   // initialize OLED with I2C addr 0x3C
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-
-
 }
 
 void updateAge() {
-
   // Clear the display
   display.clearDisplay();
   //Set the color - always use white despite actual display color
@@ -69,7 +64,8 @@ void updateAge() {
   display.setCursor(10, 32);
   display.print(pct, 5);
   display.print("%");
-
+  
+  //Serial debug output
   Serial.print("age:  ");
   Serial.print(age, 0);
   Serial.print("  lifeExp:  ");
