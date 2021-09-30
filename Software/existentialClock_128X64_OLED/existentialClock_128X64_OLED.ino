@@ -6,7 +6,7 @@
   Uses Adafruit SSD1306 OLED Library
   Uses Adafruit AM2320 Library
   Uses Adafruit GFX Graphics Library
-  
+
   DroneBot Workshop 2019
   https://dronebotworkshop.com
 */
@@ -24,27 +24,31 @@
 #define OLED_RESET 4
 Adafruit_SSD1306 display(OLED_RESET);
 
-double hours = 0;
-double total = 1000;
-double pct;
+double age = 276936; //31 years = 271560 hours, round to 270000
+double lifeExp = 713064; //81.4 years = 713064 hours
+double hoursLeft = lifeExp - age;
+double pct = (age / lifeExp) * 100;
+unsigned long intervalMillis = 1000; // number of millisecs between updating "age"
+unsigned long currentMillis = 0;    // stores the value of millis() in each iteration of loop()
+unsigned long previousMillis = 0;   // will store last time "age" was updated
+
 
 
 void setup() {
   // Start Wire library for I2C
   Wire.begin();
 
-  
+
   // initialize OLED with I2C addr 0x3C
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-  
+
 
 }
 
-void displayUpdate(){
-  // Delay to allow initialise
-  delay(500);
-  hours ++;
-  pct = hours/total;
+void updateAge() {
+
+
+
 
 
 
@@ -53,19 +57,25 @@ void displayUpdate(){
   //Set the color - always use white despite actual display color
   display.setTextColor(WHITE);
   //Set the font size
-  display.setTextSize(1);
+  display.setTextSize(0.5);
   //Set the cursor coordinates
-  display.setCursor(0,0);
-  display.print("Existential Clock");
-  display.setCursor(0,10); 
-  display.print("Pct:    "); 
-  display.print(pct); 
+  display.setCursor(0, 0);
+  display.print("EXISTENTIAL CLOCK v2");
+  display.setCursor(0, 10);
+  display.print("hoursLeft: ");
+  display.print(hoursLeft,0);
+  display.setCursor(0, 20);
+  display.print("pct: ");
+  display.print(pct,5);
   display.print(" %");
-  display.setCursor(0,20);
-  display.print("Hours: "); 
-  display.print(hours); 
 }
 void loop() {
-  displayUpdate();
-  display.display();
+
+    delay(100);
+    age = age + 1;
+    hoursLeft = lifeExp - age;
+    pct = (age/lifeExp)*100;   
+    updateAge();
+    display.display();
+  
 }
