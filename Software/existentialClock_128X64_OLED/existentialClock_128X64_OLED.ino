@@ -1,14 +1,12 @@
 /*
-  OLED Temperature and Humidity Meter
-  oled-temp-humid-meter.ino
+  OLED existentialClock
+
+  Shows user how long they have left to live
   Displays results on 128 x 64 OLED display
-  Uses AM2320 I2C Temperature and Humidity sensor
   Uses Adafruit SSD1306 OLED Library
-  Uses Adafruit AM2320 Library
   Uses Adafruit GFX Graphics Library
 
-  DroneBot Workshop 2019
-  https://dronebotworkshop.com
+  Al Green 2021
 */
 
 // Include Wire Library for I2C
