@@ -28,13 +28,13 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 //Existential life expectancy calculations
-double age = 276936; //31 years = 271560 hours, round to 270000
-double lifeExp = 713064; //81.4 years = 713064 hours
+double age = 1; //31 years = 276936 hours
+double lifeExp = 15; //81.4 years = 713064 hours
 double hoursLeft = lifeExp - age;
 double pct = (age / lifeExp) * 100;
 //Time monitors
 
-unsigned long intervalMillis1 = 10000; // number of millisecs between updating "age"
+unsigned long intervalMillis1 = 3600000; // number of millisecs between updating "age"
 unsigned long currentMillis1 = 0;    // stores the value of millis() in each iteration of loop()
 unsigned long previousMillis1 = 0;   // will store last time "age" was updated
 
@@ -98,6 +98,19 @@ void setup() {
   display.print("CLOCK v2");
   display.display();
   delay(1500);
+
+
+  Serial.print("flag:  ");
+  Serial.print(flag);
+  Serial.print("  age:  ");
+  Serial.print(age, 0);
+  Serial.print("  lifeExp:  ");
+  Serial.print(lifeExp, 0);
+  Serial.print("  hoursLeft:  ");
+  Serial.print(hoursLeft, 0);
+  Serial.print("  pct:  ");
+  Serial.print(pct, 6);
+  Serial.println("%");
 }
 
 
@@ -149,17 +162,17 @@ void updateDisplay() {
   }
 
   //Serial debug output
-  Serial.print("flag:  ");
-  Serial.print(flag);
-  Serial.print("  age:  ");
-  Serial.print(age, 0);
-  Serial.print("  lifeExp:  ");
-  Serial.print(lifeExp, 0);
-  Serial.print("  hoursLeft:  ");
-  Serial.print(hoursLeft, 0);
-  Serial.print("  pct:  ");
-  Serial.print(pct, 6);
-  Serial.println("%");
+  //Serial.print("flag:  ");
+  //Serial.print(flag);
+  //Serial.print("  age:  ");
+  //Serial.print(age, 0);
+  //Serial.print("  lifeExp:  ");
+  //Serial.print(lifeExp, 0);
+  //Serial.print("  hoursLeft:  ");
+  //Serial.print(hoursLeft, 0);
+  //Serial.print("  pct:  ");
+  //Serial.print(pct, 6);
+  //Serial.println("%");
 }
 
 void updateAge() {
@@ -186,7 +199,7 @@ void updateAge() {
   //Serial debug output
   Serial.print("flag:  ");
   Serial.print(flag);
-  Serial.print("age:  ");
+  Serial.print("  age:  ");
   Serial.print(age, 0);
   Serial.print("  lifeExp:  ");
   Serial.print(lifeExp, 0);
@@ -208,7 +221,6 @@ void loop() {
     if (flag == 4) {
       flag = 0;
     }
-    updateAge();
     updateDisplay();
     display.display();
 
