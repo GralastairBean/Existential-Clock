@@ -35,6 +35,8 @@ unsigned long previousMillis = 0;   // will store last time "age" was updated
 
 
 void setup() {
+
+  Serial.begin(9600);
   // Start Wire library for I2C
   Wire.begin();
 
@@ -47,11 +49,6 @@ void setup() {
 
 void updateAge() {
 
-
-
-
-
-
   // Clear the display
   display.clearDisplay();
   //Set the color - always use white despite actual display color
@@ -62,20 +59,32 @@ void updateAge() {
   display.setCursor(0, 0);
   display.print("EXISTENTIAL CLOCK v2");
   display.setCursor(0, 10);
-  display.print("hoursLeft: ");
-  display.print(hoursLeft,0);
+  display.print("time: ");
+  display.print(hoursLeft, 0);
   display.setCursor(0, 20);
   display.print("pct: ");
-  display.print(pct,5);
+  display.print(pct, 5);
   display.print(" %");
+
+  Serial.print("age:  ");
+  Serial.print(age, 0);
+  Serial.print("  lifeExp:  ");
+  Serial.print(lifeExp, 0);
+  Serial.print("  hoursLeft:  ");
+  Serial.print(hoursLeft, 0);
+  Serial.print("  pct:  ");
+  Serial.print(pct, 7);
+  Serial.println("%");
 }
 void loop() {
 
-    delay(100);
+  currentMillis = millis();   //check the time
+  if (currentMillis - previousMillis >= intervalMillis) {
     age = age + 1;
     hoursLeft = lifeExp - age;
-    pct = (age/lifeExp)*100;   
+    pct = (age / lifeExp) * 100;
+    previousMillis += intervalMillis;
     updateAge();
     display.display();
-  
+  }
 }
