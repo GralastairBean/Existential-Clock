@@ -28,13 +28,19 @@
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 //Existential life expectancy calculations
-double age = 1; //31 years = 276936 hours
-double lifeExp = 15; //81.4 years = 713064 hours
-double hoursLeft = lifeExp - age;
-double pct = (age / lifeExp) * 100;
+double ageYears = 31; //31 years = 276936 hours
+double ageDays = ageYears * 365;
+double ageHours = ageDays * 24;
+double lifeExpYears = 81.4; //81.4 years = 713064 hours
+double lifeExpDays = lifeExpYears * 365;
+double lifeExpHours = lifeExpDays * 24;
+double yearsLeft = lifeExpYears - ageYears;
+double daysLeft = lifeExpDays - ageDays;
+double hoursLeft = lifeExpHours - ageHours;
+double pctLeft = 100 - ( (ageHours / lifeExpHours) * 100);
 //Time monitors
 
-unsigned long intervalMillis1 = 3600000; // number of millisecs between updating "age"
+unsigned long intervalMillis1 = 3600000; // number of millisecs between updating "age" 1 hr = 3600000
 unsigned long currentMillis1 = 0;    // stores the value of millis() in each iteration of loop()
 unsigned long previousMillis1 = 0;   // will store last time "age" was updated
 
@@ -46,6 +52,7 @@ unsigned long previousMillis2 = 0;   // will store last time screen data was cha
 int flag = 0;
 
 void setup() {
+  
   // Start debug Serial
   Serial.begin(9600);
   // Start Wire library for I2C
@@ -63,7 +70,7 @@ void setup() {
   display.setCursor(0, 20);
   display.print("wait" );
   display.display();
-  delay(500);
+  //delay(500);
   display.clearDisplay();
   display.setTextSize(2);
   display.setCursor(0, 0);
@@ -71,7 +78,7 @@ void setup() {
   display.setCursor(0, 20);
   display.print("wait." );
   display.display();
-  delay(500);
+  //delay(500);
   display.clearDisplay();
   display.setTextSize(2);
   display.setCursor(0, 0);
@@ -79,7 +86,7 @@ void setup() {
   display.setCursor(0, 20);
   display.print("wait.." );
   display.display();
-  delay(500);
+  //delay(500);
   display.clearDisplay();
   display.setTextSize(2);
   display.setCursor(0, 0);
@@ -87,29 +94,44 @@ void setup() {
   display.setCursor(0, 20);
   display.print("wait..." );
   display.display();
-  delay(500);
+  //delay(500);
   display.clearDisplay();
-  display.setTextSize(2);
+  display.setTextSize(1);
   display.setCursor(0, 0);
-  display.print("EXIST" );
-  display.setCursor(0, 20);
-  display.print("-ENTIAL" );
+  display.print("EXISTENTIAL" );
   display.setCursor(0, 40);
   display.print("CLOCK v2");
   display.display();
-  delay(1500);
+  //delay(1500);
+  
 
-
+  //SERIAL DEBUG
   Serial.print("flag:  ");
   Serial.print(flag);
-  Serial.print("  age:  ");
-  Serial.print(age, 0);
-  Serial.print("  lifeExp:  ");
-  Serial.print(lifeExp, 0);
+
+  Serial.print("  ageYears:  ");
+  Serial.print(ageYears, 5);
+  Serial.print("  ageDays:  ");
+  Serial.print(ageDays, 5);
+  Serial.print("  ageHours:  ");
+  Serial.print(ageHours, 5);
+
+  Serial.print("  lifeExpYears:  ");
+  Serial.print(lifeExpYears, 5);
+  Serial.print("  lifeExpDays:  ");
+  Serial.print(lifeExpDays, 5);
+  Serial.print("  lifeExpHours:  ");
+  Serial.print(lifeExpHours, 5);
+
+  Serial.print("  yearsLeft:  ");
+  Serial.print(yearsLeft, 5);
+  Serial.print("  daysLeft:  ");
+  Serial.print(daysLeft, 5);
   Serial.print("  hoursLeft:  ");
-  Serial.print(hoursLeft, 0);
-  Serial.print("  pct:  ");
-  Serial.print(pct, 6);
+  Serial.print(hoursLeft, 5);
+
+  Serial.print("  pctLeft:  ");
+  Serial.print(pctLeft, 5);
   Serial.println("%");
 }
 
@@ -125,96 +147,89 @@ void updateDisplay() {
   if (flag == 0) {
     display.clearDisplay();
     display.setTextSize(2);
-    display.setCursor(0, 0);
-    display.print("EXIST" );
-    display.setCursor(0, 20);
-    display.print("-ENTIAL" );
-    display.setCursor(0, 40);
-    display.print("CLOCK v2");
+    display.setCursor(20, 0);
+    display.print("pctLeft");
+    display.setCursor(15, 32);
+    display.print(pctLeft, 4);
+    display.setCursor(100, 32);
+    display.print("%");
   }
   else if (flag == 1) {
     display.clearDisplay();
     display.setTextSize(2);
-    display.setCursor(0, 0);
-    display.print("Pct Lived");
-    display.setCursor(10, 32);
-    display.print(pct, 5);
-    display.print("%");
+    display.setCursor(10, 0);
+    display.print("yearsLeft");
+    display.setCursor(15, 32);
+    display.print(yearsLeft, 5);
 
   }
   else if (flag == 2) {
     display.clearDisplay();
     display.setTextSize(2);
-    display.setCursor(0, 0);
-    display.print("HoursLived");
+    display.setCursor(10, 0);
+    display.print("daysLeft");
     display.setCursor(10, 32);
-    display.print(age, 0);
+    display.print(daysLeft, 2);
 
   }
   else {
     display.clearDisplay();
     display.setTextSize(2);
-    display.setCursor(0, 0);
-    display.print("HoursLeft");
-    display.setCursor(10, 32);
+    display.setCursor(10, 0);
+    display.print("hoursLeft");
+    display.setCursor(20, 32);
     display.print(hoursLeft, 0);
 
   }
 
-  //Serial debug output
-  //Serial.print("flag:  ");
-  //Serial.print(flag);
-  //Serial.print("  age:  ");
-  //Serial.print(age, 0);
-  //Serial.print("  lifeExp:  ");
-  //Serial.print(lifeExp, 0);
-  //Serial.print("  hoursLeft:  ");
-  //Serial.print(hoursLeft, 0);
-  //Serial.print("  pct:  ");
-  //Serial.print(pct, 6);
-  //Serial.println("%");
 }
 
 void updateAge() {
-  // Clear the display
-  //display.clearDisplay();
-  //Set the color - always use white despite actual display color
-  //display.setTextColor(WHITE);
-  //Set the font size
-  //display.setTextSize(2);
+  //increment age and recalculate all ages
+  ageHours = ageHours + 1;
+  ageDays = ageHours / 24;
+  ageYears = ageDays / 365;
+  //recalculate time left
+  hoursLeft = lifeExpHours - ageHours;
+  daysLeft = lifeExpDays - ageDays;
+  yearsLeft = lifeExpYears - ageYears;
+  pctLeft = 100 - ( (ageHours / lifeExpHours) * 100);
 
-  //Set the cursor coordinates
-  //display.setCursor(0, 0);
-  //display.print("EXISTENTIAL CLOCK v2");
-  //display.setCursor(10, 0);
-  //display.print("time: ");
-  //display.setCursor(0, 16);
-  //display.print(hoursLeft, 0);
-  //display.setCursor(0, 32);
-  //display.print("Pct Lived");
-  //display.setCursor(10, 32);
-  //display.print(pct, 5);
-  //display.print("%");
-
-  //Serial debug output
+  //SERIAL DEBUG
   Serial.print("flag:  ");
   Serial.print(flag);
-  Serial.print("  age:  ");
-  Serial.print(age, 0);
-  Serial.print("  lifeExp:  ");
-  Serial.print(lifeExp, 0);
+
+  Serial.print("  ageYears:  ");
+  Serial.print(ageYears, 0);
+  Serial.print("  ageDays:  ");
+  Serial.print(ageDays, 0);
+  Serial.print("  ageHours:  ");
+  Serial.print(ageHours, 0);
+
+  Serial.print("  lifeExpYears:  ");
+  Serial.print(lifeExpYears, 0);
+  Serial.print("  lifeExpDays:  ");
+  Serial.print(lifeExpDays, 0);
+  Serial.print("  lifeExpHours:  ");
+  Serial.print(lifeExpHours, 0);
+
+  Serial.print("  yearsLeft:  ");
+  Serial.print(yearsLeft, 0);
+  Serial.print("  daysLeft:  ");
+  Serial.print(daysLeft, 0);
   Serial.print("  hoursLeft:  ");
   Serial.print(hoursLeft, 0);
-  Serial.print("  pct:  ");
-  Serial.print(pct, 6);
+
+  Serial.print("  pctLeft:  ");
+  Serial.print(pctLeft, 6);
   Serial.println("%");
 }
 void loop() {
-
-  currentMillis1 = millis();   //check the time
+  //check the time
+  currentMillis1 = millis();
   currentMillis2 = millis();
 
-
+  //if time to update display then call updateDisplay() function and increment the flag
   if (currentMillis2 - previousMillis2 >= intervalMillis2) {
     previousMillis2 += intervalMillis2;
     flag = flag + 1;
@@ -223,16 +238,12 @@ void loop() {
     }
     updateDisplay();
     display.display();
-
   }
 
+  //if time to update age play then call updateAge() function
   if (currentMillis1 - previousMillis1 >= intervalMillis1) {
-    age = age + 1;
-    hoursLeft = lifeExp - age;
-    pct = (age / lifeExp) * 100;
     previousMillis1 += intervalMillis1;
     updateAge();
     display.display();
-
   }
 }
