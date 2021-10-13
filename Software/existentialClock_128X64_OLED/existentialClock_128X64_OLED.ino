@@ -40,7 +40,7 @@ double hoursLeft = lifeExpHours - ageHours;
 double pctLeft = 100 - ( (ageHours / lifeExpHours) * 100);
 //Time monitors
 
-unsigned long intervalMillis1 = 3600000; // number of millisecs between updating "age" 1 hr = 3600000
+unsigned long intervalMillis1 = 1000; // number of millisecs between updating "age" 1 hr = 3600000
 unsigned long currentMillis1 = 0;    // stores the value of millis() in each iteration of loop()
 unsigned long previousMillis1 = 0;   // will store last time "age" was updated
 
@@ -52,7 +52,7 @@ unsigned long previousMillis2 = 0;   // will store last time screen data was cha
 int flag = 0;
 
 void setup() {
-  
+
   // Start debug Serial
   Serial.begin(9600);
   // Start Wire library for I2C
@@ -103,35 +103,35 @@ void setup() {
   display.print("CLOCK v2");
   display.display();
   //delay(1500);
-  
+
 
   //SERIAL DEBUG
   Serial.print("flag:  ");
   Serial.print(flag);
 
-  Serial.print("  ageYears:  ");
-  Serial.print(ageYears, 5);
-  Serial.print("  ageDays:  ");
-  Serial.print(ageDays, 5);
-  Serial.print("  ageHours:  ");
-  Serial.print(ageHours, 5);
-
+  Serial.print("  lifeExpHours:  ");
+  Serial.print(lifeExpHours, 0);
+  Serial.print("  lifeExpDays:  ");
+  Serial.print(lifeExpDays, 2);
   Serial.print("  lifeExpYears:  ");
   Serial.print(lifeExpYears, 5);
-  Serial.print("  lifeExpDays:  ");
-  Serial.print(lifeExpDays, 5);
-  Serial.print("  lifeExpHours:  ");
-  Serial.print(lifeExpHours, 5);
 
+  Serial.print("  ageHours:  ");
+  Serial.print(ageHours, 0);
+  Serial.print("  ageDays:  ");
+  Serial.print(ageDays, 2);
+  Serial.print("  ageYears:  ");
+  Serial.print(ageYears, 5);
+
+  Serial.print("  hoursLeft:  ");
+  Serial.print(hoursLeft, 0);
+  Serial.print("  daysLeft:  ");
+  Serial.print(daysLeft, 2);
   Serial.print("  yearsLeft:  ");
   Serial.print(yearsLeft, 5);
-  Serial.print("  daysLeft:  ");
-  Serial.print(daysLeft, 5);
-  Serial.print("  hoursLeft:  ");
-  Serial.print(hoursLeft, 5);
 
   Serial.print("  pctLeft:  ");
-  Serial.print(pctLeft, 5);
+  Serial.print(pctLeft, 4);
   Serial.println("%");
 }
 
@@ -199,29 +199,22 @@ void updateAge() {
   Serial.print("flag:  ");
   Serial.print(flag);
 
-  Serial.print("  ageYears:  ");
-  Serial.print(ageYears, 0);
-  Serial.print("  ageDays:  ");
-  Serial.print(ageDays, 0);
   Serial.print("  ageHours:  ");
   Serial.print(ageHours, 0);
+  Serial.print("  ageDays:  ");
+  Serial.print(ageDays, 2);
+  Serial.print("  ageYears:  ");
+  Serial.print(ageYears, 5);
 
-  Serial.print("  lifeExpYears:  ");
-  Serial.print(lifeExpYears, 0);
-  Serial.print("  lifeExpDays:  ");
-  Serial.print(lifeExpDays, 0);
-  Serial.print("  lifeExpHours:  ");
-  Serial.print(lifeExpHours, 0);
-
-  Serial.print("  yearsLeft:  ");
-  Serial.print(yearsLeft, 0);
-  Serial.print("  daysLeft:  ");
-  Serial.print(daysLeft, 0);
   Serial.print("  hoursLeft:  ");
   Serial.print(hoursLeft, 0);
+  Serial.print("  daysLeft:  ");
+  Serial.print(daysLeft, 2);
+  Serial.print("  yearsLeft:  ");
+  Serial.print(yearsLeft, 5);
 
   Serial.print("  pctLeft:  ");
-  Serial.print(pctLeft, 6);
+  Serial.print(pctLeft, 4);
   Serial.println("%");
 }
 void loop() {
