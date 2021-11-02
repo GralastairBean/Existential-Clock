@@ -40,7 +40,7 @@ double hoursLeft = lifeExpHours - ageHours;
 double pctLeft = 100 - ( (ageHours / lifeExpHours) * 100);
 //Time monitors
 
-unsigned long intervalMillis1 = 1000; // number of millisecs between updating "age" 1 hr = 3600000
+unsigned long intervalMillis1 = 3600000; // number of millisecs between updating "age" 1 hr = 3600000
 unsigned long currentMillis1 = 0;    // stores the value of millis() in each iteration of loop()
 unsigned long previousMillis1 = 0;   // will store last time "age" was updated
 
@@ -131,7 +131,7 @@ void setup() {
   Serial.print(yearsLeft, 5);
 
   Serial.print("  pctLeft:  ");
-  Serial.print(pctLeft, 4);
+  Serial.print(pctLeft, 3);
   Serial.println("%");
 }
 
@@ -150,7 +150,7 @@ void updateDisplay() {
     display.setCursor(20, 0);
     display.print("pctLeft");
     display.setCursor(15, 32);
-    display.print(pctLeft, 4);
+    display.print(pctLeft, 3);
     display.setCursor(100, 32);
     display.print("%");
   }
@@ -166,9 +166,9 @@ void updateDisplay() {
   else if (flag == 2) {
     display.clearDisplay();
     display.setTextSize(2);
-    display.setCursor(10, 0);
+    display.setCursor(15, 0);
     display.print("daysLeft");
-    display.setCursor(10, 32);
+    display.setCursor(17, 32);
     display.print(daysLeft, 2);
 
   }
@@ -177,7 +177,7 @@ void updateDisplay() {
     display.setTextSize(2);
     display.setCursor(10, 0);
     display.print("hoursLeft");
-    display.setCursor(20, 32);
+    display.setCursor(26, 32);
     display.print(hoursLeft, 0);
 
   }
