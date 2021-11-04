@@ -1,6 +1,9 @@
 # Existential Clock
  Don't let life pass you by...
 
+a potential graphocs library
+https://github.com/bitbank2/ssd1327
+
 
 
 -------------PLAN-------------

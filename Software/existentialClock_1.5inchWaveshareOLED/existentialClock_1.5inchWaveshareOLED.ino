@@ -19,6 +19,8 @@
 #include "Show_Lib.h"
 #include "Debug.h"
 
+int test = 1;
+
 extern OLED_DIS sOLED_DIS;
 void setup()
 {
@@ -44,23 +46,13 @@ void setup()
   OLED_ClearBuf();
 
 
+  /*GUI_DisNum(4, 5, test, &Font12, FONT_BACKGROUND, WHITE);
+  OLED_DisPage(0, 3);
+  OLED_ClearBuf(); */
 
-  /*
-    GUI_Disbitmap(0  , 2, Signal816  , 16, 8);
-    GUI_Disbitmap(24 , 2, Bluetooth88, 8 , 8);
-    GUI_Disbitmap(40 , 2, Msg816     , 16, 8);
-    GUI_Disbitmap(64 , 2, GPRS88     , 8 , 8);
-    GUI_Disbitmap(90 , 2, Alarm88    , 8 , 8);
-    GUI_Disbitmap(112, 2, Bat816     , 16, 8);
-    OLED_Display(0, 52, 128, 52 + 16);
-    OLED_ClearBuf();
 
-    GUI_DisString_EN(0 , 0, "MUSIC", &Font12, FONT_BACKGROUND, WHITE);
-    GUI_DisString_EN(48, 0, "MENU" , &Font12, FONT_BACKGROUND, WHITE);
-    GUI_DisString_EN(90, 0, "PHONE", &Font12, FONT_BACKGROUND, WHITE);
-    OLED_Display(0, 96, 128, 96 + 16);
-    OLED_ClearBuf();
-  */
+
+  
 }
 
 void loop()
