@@ -1,6 +1,5 @@
 /*existentialClock_1
 Al Green 2021
-Uses a 20x4 I2C LCD to show your hours lived, hours to live and % of life
 */
 #include <LiquidCrystal.h>
 #include <Wire.h>
@@ -16,16 +15,6 @@ unsigned long previousMillis = 0;   // will store last time "age" was updated
 
 
 void setup() {
-lcd.init();                      // initialize the lcd
-lcd.backlight();                  // turn on the lcd backlight
-lcd.clear();
-lcd.setCursor(0, 0);
-lcd.print("EXISTENTIAL CLOCK V1");
-
-lcd.setCursor(0, 1);
-lcd.print("Age");
-lcd.setCursor(8, 1);
-lcd.print(age,0);
 lcd.setCursor(14, 1);
 lcd.print(" hrs");
 
@@ -84,7 +73,6 @@ void updateAge() {
   if (currentMillis - previousMillis >= intervalMillis) {
     age = age + 1;
     hoursLeft = lifeExp - age;
-    pct = (age/lifeExp)*100;   
     previousMillis += intervalMillis;
     Serial.print("age:  "); 
     Serial.print(age,0);
