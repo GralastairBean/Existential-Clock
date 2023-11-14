@@ -10,7 +10,7 @@ double age = 289278; //33 years = 289278 hours
 double lifeExp = 672440; //AUSTRALIAN 1989 Life expectancy = 76.71 years  = 672440 hours (1yr=365.2425 days)
 double hoursLeft = lifeExp - age;
 double pct = (age / lifeExp) * 100;
-unsigned long intervalMillis = 3000; // 1 hour = 3600000 ms = number of millisecs between updating "age"
+unsigned long intervalMillis = 3600000; // 1 hour = 3600000 ms = number of millisecs between updating "age"
 unsigned long currentMillis = 0;    // stores the value of millis() in each iteration of loop()
 unsigned long previousMillis = 0;   // will store last time "age" was updated
 
