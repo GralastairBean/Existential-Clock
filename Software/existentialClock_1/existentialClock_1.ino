@@ -1,5 +1,6 @@
 /*existentialClock_1
 Al Green 2021
+Uses a 20x4 I2C LCD to show your hours lived, hours to live and % of life
 */
 #include <LiquidCrystal.h>
 #include <Wire.h>
