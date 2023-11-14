@@ -5,7 +5,7 @@
 #include <LiquidCrystal.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd(0x20,20,4);  // set the LCD address to 0x20 for a 20 chars and 4 line displa
+LiquidCrystal_I2C lcd(0x20, 20, 4); // set the LCD address to 0x20 for a 20 chars and 4 line displa
 double age = 289278; //33 years = 289278 hours
 double lifeExp = 672440; //AUSTRALIAN 1989 Life expectancy = 76.71 years  = 672440 hours (1yr=365.2425 days)
 double hoursLeft = lifeExp - age;
