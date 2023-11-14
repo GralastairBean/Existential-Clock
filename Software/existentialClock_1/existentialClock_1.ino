@@ -6,8 +6,8 @@ Uses a 20x4 I2C LCD to show your hours lived, hours to live and % of life
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x20,20,4);  // set the LCD address to 0x20 for a 20 chars and 4 line displa
-double age = 276936; //31 years = 271560 hours, round to 270000
-double lifeExp = 713064; //81.4 years = 713064 hours
+double age = 289278; //33 years = 289278 hours
+double lifeExp = 672440; //AUSTRALIAN 1989 Life expectancy = 76.71 years  = 672440 hours (1yr=365.2425 days)
 double hoursLeft = lifeExp - age;
 double pct = (age/lifeExp)*100;
 unsigned long intervalMillis = 3600000; // number of millisecs between updating "age"
