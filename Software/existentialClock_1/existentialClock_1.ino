@@ -14,8 +14,13 @@ unsigned long intervalMillis = 3600000; // 1 hour = 3600000 ms = number of milli
 unsigned long currentMillis = 0;    // stores the value of millis() in each iteration of loop()
 unsigned long previousMillis = 0;   // will store last time "age" was updated
 
+const int ledPin =  LED_BUILTIN;// the number of the LED pin
+int ledState = LOW;             // ledState used to set the LED
+unsigned long previousMillis_LED = 0;        // will store last time LED was updated
+const long interval_LED = 1000;           // interval at which to blink (milliseconds)
 
 void setup() {
+  pinMode(ledPin, OUTPUT);
   lcd.init();                      // initialize the lcd
   lcd.backlight();                  // turn on the lcd backlight
   lcd.clear();
@@ -119,6 +124,21 @@ void updateAge() {
     lcd.print(pct, 5);
     lcd.setCursor(17, 3);
     lcd.print("%");
+  }
+  unsigned long currentMillis_LED = millis();
+  if (currentMillis_LED - previousMillis_LED >= interval_LED) {
+    // save the last time you blinked the LED
+    previousMillis_LED = currentMillis_LED;
+
+    // if the LED is off turn it on and vice-versa:
+    if (ledState == LOW) {
+      ledState = HIGH;
+    } else {
+      ledState = LOW;
+    }
+
+    // set the LED with the ledState of the variable:
+    digitalWrite(ledPin, ledState);
   }
 
 }
