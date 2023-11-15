@@ -18,7 +18,11 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x20, 20, 4); // set the LCD address to 0x20 for a 20 chars and 4 line displa
 double age = 289278; //33 years = 289278 hours
-double lifeExp = 672440; //AUSTRALIAN 1989 Life expectancy = 76.71 years  = 672440 hours (1yr=365.2425 days)
+
+// AUS Median age of death for 2021 = 79 years (men)  
+// AUS Life expectancy 2021 = 81 (men) 
+// So use 80 years = 701280 hrs  (1 yr = 8766 hrs)
+double lifeExp = 701280;
 double hoursLeft = lifeExp - age;
 double pct = (age / lifeExp) * 100;
 unsigned long intervalMillis = 3600000; // 1 hour = 3600000 ms = number of millisecs between updating "age"
