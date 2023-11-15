@@ -51,6 +51,7 @@ void setup() {
   lcd.print("%");
 
   Serial.begin(9600);
+  Serial.println("EXISTENTIAL CLOCK V1 DEBUG");
   Serial.print("age:  ");
   Serial.print(age, 0);
   Serial.print("  lifeExp:  ");
