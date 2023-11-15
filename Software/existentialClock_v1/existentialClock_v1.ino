@@ -67,24 +67,6 @@ void loop() {
 
   currentMillis = millis();   //check the time
   updateAge();  //call update age function
-
-  if (age >= lifeExp) {
-    Serial.println("***************");
-    Serial.println("YOU ARE DEAD");
-    Serial.println("***************");
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("EXISTENTIAL CLOCK V1");
-    lcd.setCursor(0, 1);
-    lcd.print("********************");
-    lcd.setCursor(0, 2);
-    lcd.print("YOU ARE DEAD.....");
-    lcd.setCursor(0, 3);
-    lcd.print("********************");
-
-    delay(10000000);
-
-  }
 }
 
 void updateAge() {
