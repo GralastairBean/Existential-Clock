@@ -14,10 +14,12 @@ unsigned long intervalMillis = 3600000; // 1 hour = 3600000 ms = number of milli
 unsigned long currentMillis = 0;    // stores the value of millis() in each iteration of loop()
 unsigned long previousMillis = 0;   // will store last time "age" was updated
 
-const int ledPin =  LED_BUILTIN;// the number of the LED pin
-int ledState = LOW;             // ledState used to set the LED
-unsigned long previousMillis_LED = 0;        // will store last time LED was updated
-const long interval_LED = 1000;           // interval at which to blink (milliseconds)
+// Heartbeat LED Setup
+const int ledPin = 9;              // This must be a PWM pin.
+// Assuming that a led update of 25 Hz is fast enough, then the interval is 40 ms.
+unsigned long previousMillis_LED;
+const unsigned long interval_LED = 40; // update interval
+float x = -0.5;                    // from -0.5 to 0.5
 
 void setup() {
   pinMode(ledPin, OUTPUT);
@@ -125,20 +127,41 @@ void updateAge() {
     lcd.setCursor(17, 3);
     lcd.print("%");
   }
-  unsigned long currentMillis_LED = millis();
-  if (currentMillis_LED - previousMillis_LED >= interval_LED) {
-    // save the last time you blinked the LED
+ unsigned long currentMillis_LED = millis();
+
+  if( currentMillis_LED - previousMillis_LED >= interval_LED)
+  {
     previousMillis_LED = currentMillis_LED;
 
-    // if the LED is off turn it on and vice-versa:
-    if (ledState == LOW) {
-      ledState = HIGH;
-    } else {
-      ledState = LOW;
-    }
+    // The standard deviation is:
+    //    y = e ^ ( -0.5 * x * x )
+    // This sketch uses:
+    //    y = expf ( -s * squaref ( x ) )
+    //
+    // The brightness to the human eye is close to a logarithmic scale with base 10.
+    // Since an exponential curve is used, it is already a nice pulse.
 
-    // set the LED with the ledState of the variable:
-    digitalWrite(ledPin, ledState);
+    const float s1 = 150.0;        // steepness first pulse (recommend 150.0)
+    const float s2 = 400.0;        // steepness second pulse (recommend 400.0)
+    const float d = 0.13;          // distance between the pulses (recommend 0.13)
+    const float f = 0.7;           // frequency of heartbeat in Hz (recomend 0.6)
+    const float a = 200.0;         // amplitude of brightness (recommend 200.0)
+
+    // Set lowest value to 1, so the led does not go completely off
+    float y = 0.0;
+
+    // First pulse.
+    y += a * expf( -s1 * squaref( x + d));
+
+    // Second pulse at lower brightness.
+    y += a * expf( -s2 * squaref( x - d)) * 0.30;
+
+    // The total value of y should not be above 255.
+    analogWrite( ledPin, int( y));
+
+    x += f * float( interval_LED) / 1000.0;  // divide interval by 1000 because it is in milliseconds
+    if( x >= 0.5)
+      x -= 1.0;
   }
 
 }
