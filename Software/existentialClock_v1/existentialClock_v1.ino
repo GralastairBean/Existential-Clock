@@ -1,4 +1,4 @@
-/*existentialClock_1
+/*existentialClock_v5
   Al Green 2021
   Uses a 20x4 I2C LCD to show your hours lived, hours to live and % of life
 
@@ -38,7 +38,7 @@ void setup() {
   lcd.backlight();                  // turn on the lcd backlight
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("EXISTENTIAL CLOCK V1");
+  lcd.print("EXISTENTIAL CLOCK V5");
 
   lcd.setCursor(0, 1);
   lcd.print("Age");
@@ -62,7 +62,7 @@ void setup() {
   lcd.print("%");
 
   Serial.begin(9600);
-  Serial.println("EXISTENTIAL CLOCK V1 DEBUG");
+  Serial.println("EXISTENTIAL CLOCK V5 DEBUG");
   Serial.print("age:  ");
   Serial.print(age, 0);
   Serial.print("  lifeExp:  ");
@@ -99,7 +99,7 @@ void updateAge() {
     Serial.println("%");
 
     lcd.clear();
-    lcd.print("EXISTENTIAL CLOCK V1");
+    lcd.print("EXISTENTIAL CLOCK V5");
     lcd.setCursor(0, 1);
     lcd.print("Age");
     lcd.setCursor(8, 1);
