@@ -109,9 +109,9 @@ void updateAge() {
     lcd.setCursor(17, 3);
     lcd.print("%");
   }
- unsigned long currentMillis_LED = millis();
+  unsigned long currentMillis_LED = millis();
 
-  if( currentMillis_LED - previousMillis_LED >= interval_LED)
+  if ( currentMillis_LED - previousMillis_LED >= interval_LED)
   {
     previousMillis_LED = currentMillis_LED;
 
@@ -142,7 +142,7 @@ void updateAge() {
     analogWrite( ledPin, int( y));
 
     x += f * float( interval_LED) / 1000.0;  // divide interval by 1000 because it is in milliseconds
-    if( x >= 0.5)
+    if ( x >= 0.5)
       x -= 1.0;
   }
 
