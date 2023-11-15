@@ -1,6 +1,17 @@
 /*existentialClock_1
   Al Green 2021
   Uses a 20x4 I2C LCD to show your hours lived, hours to live and % of life
+
+  WIRING
+  20x4 LCD - Arduino Uno
+  VCC - 5V
+  GND - GND
+  SCL - A5 (ANALOGUE IN)
+  SDA - A4 (ANALOGUE IN)
+  5MM RED LED - Arduino Uno
+  -VE - GND
+  +VE - 300 OHM RES - DIGITAL PIN 9 (PWM)
+  
 */
 #include <LiquidCrystal.h>
 #include <Wire.h>
