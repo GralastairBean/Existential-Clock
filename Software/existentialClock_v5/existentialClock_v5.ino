@@ -11,18 +11,18 @@
   5MM RED LED - Arduino Uno
   -VE - GND
   +VE - 300 OHM RES - DIGITAL PIN 9 (PWM)
-  
+
 */
 #include <LiquidCrystal.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x20, 20, 4); // set the LCD address to 0x20 for a 20 chars and 4 line displa
-double age = 289278; //33 years = 289278 hours
+double age = 289.278; //33 years = 289278 hours
 
-// AUS Median age of death for 2021 = 79 years (men)  
-// AUS Life expectancy 2021 = 81 (men) 
+// AUS Median age of death for 2021 = 79 years (men)
+// AUS Life expectancy 2021 = 81 (men)
 // So use 80 years = 701280 hrs  (1 yr = 8766 hrs)
-double lifeExp = 701280;
+double lifeExp = 701.280;
 double hoursLeft = lifeExp - age;
 double pct = (age / lifeExp) * 100;
 unsigned long intervalMillis = 3600000; // 1 hour = 3600000 ms = number of millisecs between updating "age"
@@ -47,15 +47,15 @@ void setup() {
   lcd.setCursor(0, 1);
   lcd.print("Age");
   lcd.setCursor(8, 1);
-  lcd.print(age, 0);
-  lcd.setCursor(14, 1);
+  lcd.print(age, 3);
+  lcd.setCursor(15, 1);
   lcd.print(" hrs");
 
   lcd.setCursor(0, 2);
   lcd.print("Remain");
   lcd.setCursor(8, 2);
-  lcd.print(hoursLeft, 0);
-  lcd.setCursor(14, 2);
+  lcd.print(hoursLeft, 3);
+  lcd.setCursor(15, 2);
   lcd.print(" hrs");
 
   lcd.setCursor(0, 3);
@@ -68,11 +68,11 @@ void setup() {
   Serial.begin(9600);
   Serial.println("EXISTENTIAL CLOCK V5 DEBUG");
   Serial.print("age:  ");
-  Serial.print(age, 0);
+  Serial.print(age, 3);
   Serial.print("  lifeExp:  ");
-  Serial.print(lifeExp, 0);
+  Serial.print(lifeExp, 3);
   Serial.print("  hoursLeft:  ");
-  Serial.print(hoursLeft, 0);
+  Serial.print(hoursLeft, 3);
   Serial.print("  pct:  ");
   Serial.print(pct, 7);
   Serial.println("%");
@@ -87,35 +87,37 @@ void loop() {
 
 void updateAge() {
   if (currentMillis - previousMillis >= intervalMillis) {
-    age = age + 1;
+    age = (age + 0.001);
     hoursLeft = lifeExp - age;
     pct = (age / lifeExp) * 100;
     previousMillis += intervalMillis;
 
+    Serial.println("EXISTENTIAL CLOCK V5 DEBUG");
     Serial.print("age:  ");
-    Serial.print(age, 0);
+    Serial.print(age, 3);
     Serial.print("  lifeExp:  ");
-    Serial.print(lifeExp, 0);
+    Serial.print(lifeExp, 3);
     Serial.print("  hoursLeft:  ");
-    Serial.print(hoursLeft, 0);
+    Serial.print(hoursLeft, 3);
     Serial.print("  pct:  ");
     Serial.print(pct, 7);
     Serial.println("%");
 
     lcd.clear();
     lcd.print("EXISTENTIAL CLOCK V5");
+
     lcd.setCursor(0, 1);
     lcd.print("Age");
     lcd.setCursor(8, 1);
-    lcd.print(age, 0);
-    lcd.setCursor(14, 1);
+    lcd.print(age, 3);
+    lcd.setCursor(15, 1);
     lcd.print(" hrs");
 
     lcd.setCursor(0, 2);
     lcd.print("Remain");
     lcd.setCursor(8, 2);
-    lcd.print(hoursLeft, 0);
-    lcd.setCursor(14, 2);
+    lcd.print(hoursLeft, 3);
+    lcd.setCursor(15, 2);
     lcd.print(" hrs");
 
     lcd.setCursor(0, 3);
