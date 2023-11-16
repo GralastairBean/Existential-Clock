@@ -25,7 +25,7 @@ double age = 289.278; //33 years = 289278 hours
 double lifeExp = 701.280;
 double hoursLeft = lifeExp - age;
 double pct = (age / lifeExp) * 100;
-unsigned long intervalMillis = 3600000; // 1 hour = 3600000 ms = number of millisecs between updating "age"
+unsigned long intervalMillis = 3000; // 1 hour = 3600000 ms = number of millisecs between updating "age"
 unsigned long currentMillis = 0;    // stores the value of millis() in each iteration of loop()
 unsigned long previousMillis = 0;   // will store last time "age" was updated
 
@@ -60,10 +60,10 @@ void setup() {
 
   lcd.setCursor(0, 3);
   lcd.print("Life %");
-  lcd.setCursor(8, 3);
-  lcd.print(pct, 5);
-  lcd.setCursor(17, 3);
-  lcd.print("%");
+  lcd.setCursor(9, 3);
+  lcd.print(pct, 3);
+  lcd.setCursor(16, 3);
+  lcd.print("pct");
 
   Serial.begin(9600);
   Serial.println("EXISTENTIAL CLOCK V5 DEBUG");
@@ -121,10 +121,10 @@ void updateAge() {
 
     lcd.setCursor(0, 3);
     lcd.print("Life %");
-    lcd.setCursor(8, 3);
-    lcd.print(pct, 5);
-    lcd.setCursor(17, 3);
-    lcd.print("%");
+    lcd.setCursor(9, 3);
+    lcd.print(pct, 3);
+    lcd.setCursor(16, 3);
+    lcd.print("pct");
   }
   unsigned long currentMillis_LED = millis();
 
