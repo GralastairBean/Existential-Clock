@@ -92,7 +92,6 @@ void updateAge() {
     pct = (age / lifeExp) * 100;
     previousMillis += intervalMillis;
 
-    Serial.println("EXISTENTIAL CLOCK V5 DEBUG");
     Serial.print("age:  ");
     Serial.print(age, 3);
     Serial.print("  lifeExp:  ");
