@@ -74,7 +74,7 @@ void setup() {
   Serial.print("  hoursLeft:  ");
   Serial.print(hoursLeft, 3);
   Serial.print("  pct:  ");
-  Serial.print(pct, 7);
+  Serial.print(pct, 3);
   Serial.println("%");
 
 }
@@ -99,7 +99,7 @@ void updateAge() {
     Serial.print("  hoursLeft:  ");
     Serial.print(hoursLeft, 3);
     Serial.print("  pct:  ");
-    Serial.print(pct, 7);
+    Serial.print(pct, 3);
     Serial.println("%");
 
     lcd.clear();
