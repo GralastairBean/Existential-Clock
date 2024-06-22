@@ -17,7 +17,7 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x20, 20, 4); // set the LCD address to 0x20 for a 20 chars and 4 line displa
-double age = 289.278; //33 years = 289278 hours
+double age = 302.208; //use an age in hrs calculator: https://www.omnicalculator.com/everyday-life/age-in-hours
 
 // AUS Median age of death for 2021 = 79 years (men)
 // AUS Life expectancy 2021 = 81 (men)
