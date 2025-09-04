@@ -26,7 +26,8 @@ CS (First Module)   -> CS (Second Module)
 
 LedControl lc = LedControl(DIN_PIN, CLK_PIN, CS_PIN, 2); // 2 Modules
 
-long long currentNumber = 1607827200; // 52 years as seconds
+long long currentNumber = 1607827200 ; // 51 years in seconds
+
 void setup() {
   for (int module = 0; module < 2; module++) {
     lc.shutdown(module, false);   // Wake up the display
@@ -41,7 +42,7 @@ void loop() {
   if (currentNumber < 0) {
     currentNumber = 0; // Stop at 0
   }
-  delay(10); // 1-second delay
+  delay(1000); // 1-second delay
 }
 
 void displayNumber(long long number) {
