@@ -1,45 +1,59 @@
+/*
+Connections for the MAX7219 Modules:
+-------------------------------------
+Arduino   -> MAX7219 (First Module)
+-------------------------------------
+GND       -> GND
+5V        -> VCC
+D11       -> DIN
+D10       -> CS
+D13       -> CLK
+
+MAX7219 (First Module) -> MAX7219 (Second Module)
+-------------------------------------
+DOUT (First Module) -> DIN (Second Module)
+GND (First Module)  -> GND (Second Module)
+VCC (First Module)  -> VCC (Second Module)
+CLK (First Module)  -> CLK (Second Module)
+CS (First Module)   -> CS (Second Module)
+*/
+
 #include <LedControl.h>
 
-// Pins for the MAX7219
 #define DIN_PIN 11
 #define CS_PIN 10
 #define CLK_PIN 13
 
-// Create an instance of LedControl
-LedControl lc = LedControl(DIN_PIN, CLK_PIN, CS_PIN, 1); // 1 = Number of MAX7219 modules
+LedControl lc = LedControl(DIN_PIN, CLK_PIN, CS_PIN, 2); // 2 Modules
 
-// Starting number
-long currentNumber = 10000000;
-
+long long currentNumber = 1607827200; // 52 years as seconds
 void setup() {
-  // Initialize the MAX7219
-  lc.shutdown(0, false);   // Wake up the display
-  lc.setIntensity(0, 1);   // Set brightness level to 2 (dim but visible)
-  lc.clearDisplay(0);      // Clear the display
+  for (int module = 0; module < 2; module++) {
+    lc.shutdown(module, false);   // Wake up the display
+    lc.setIntensity(module, 2);   // Set brightness to 2
+    lc.clearDisplay(module);      // Clear the display
+  }
 }
 
 void loop() {
-  // Display the current number
   displayNumber(currentNumber);
-  
-  // Decrement the number by 1
   currentNumber--;
-  
-  // If the number reaches 0, stop at 0
   if (currentNumber < 0) {
-    currentNumber = 0;
+    currentNumber = 0; // Stop at 0
   }
-  
-  // Wait for 1 second
-  delay(1000);
+  delay(10); // 1-second delay
 }
 
-// Function to display a number on the 8-digit display
-void displayNumber(long number) {
-  for (int i = 0; i < 8; i++) {
-    // Extract each digit (right to left)
-    int digit = number % 10;
-    lc.setDigit(0, i, digit, false); // 'false' = no decimal point
-    number /= 10;
+void displayNumber(long long number) {
+  for (int module = 1; module >= 0; module--) { // Reverse module order
+    for (int i = 0; i < 8; i++) {
+      if (number > 0) {
+        int digit = number % 10;
+        lc.setDigit(module, i, digit, false); // Display digit
+        number /= 10;
+      } else {
+        lc.setChar(module, i, ' ', false); // Clear leading digits
+      }
+    }
   }
 }
