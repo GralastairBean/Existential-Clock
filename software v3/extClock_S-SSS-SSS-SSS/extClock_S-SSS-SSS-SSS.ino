@@ -6,18 +6,29 @@
 #define CS_PIN 10
 #define CLK_PIN 13
 
+// Potentiometer pin
+#define POT_PIN A0
+
 LedControl lc = LedControl(DIN_PIN, CLK_PIN, CS_PIN, 2);
 RTC_DS3231 rtc;
 
-DateTime deathTime(2070, 9, 5, 0, 0, 0); //(year, month, day, hour, minute, second);
+DateTime deathTime(2070, 9, 5, 0, 0, 0); //(year, month, day, hour, minute, second)
+
+// Track brightness changes
+int lastBrightness = -1;
+
+// Track time updates
+unsigned long lastUpdate = 0;
 
 void setup() {
+  Serial.begin(9600);
+
   if (!rtc.begin()) {
     while (1);  
   }
   for (int module = 0; module < 2; module++) {
     lc.shutdown(module, false);
-    lc.setIntensity(module, 3);
+    lc.setIntensity(module, 3);   // temporary startup brightness
     lc.clearDisplay(module);
   }
 }
@@ -41,7 +52,6 @@ void displayNumberWithDashes(unsigned long long number) {
             i++; // skip the dash slot
           } else if (module > 0) {
             lc.setChar(module - 1, 0, '-', false);
-            // will automatically land as first slot of next module
           }
           digitCount = 0;
         }
@@ -53,18 +63,35 @@ void displayNumberWithDashes(unsigned long long number) {
 }
 
 void loop() {
-  DateTime now = rtc.now();
+  // --- Brightness control ---
+  int potValue = analogRead(POT_PIN);                 // 0–1023
+  int brightness = map(potValue, 0, 1000, 0, 15);     // 0–15
 
-  if (now >= deathTime) {
-    lc.clearDisplay(0);
-    lc.clearDisplay(1);
-    lc.setChar(1, 7, '0', false);
-  } else {
-    TimeSpan remaining = deathTime - now;
-    unsigned long long totalSecs = remaining.totalseconds();
-
-    displayNumberWithDashes(totalSecs);
+  if (brightness != lastBrightness) {
+    for (int module = 0; module < 2; module++) {
+      lc.setIntensity(module, brightness);
+    }
+    Serial.print("Brightness: ");
+    Serial.println(brightness);
+    lastBrightness = brightness;
   }
 
-  delay(1000);
+  // --- Countdown update once per second ---
+  unsigned long currentMillis = millis();
+  if (currentMillis - lastUpdate >= 1000) {
+    lastUpdate = currentMillis;
+
+    DateTime now = rtc.now();
+
+    if (now >= deathTime) {
+      lc.clearDisplay(0);
+      lc.clearDisplay(1);
+      lc.setChar(1, 7, '0', false);
+    } else {
+      TimeSpan remaining = deathTime - now;
+      unsigned long long totalSecs = remaining.totalseconds();
+
+      displayNumberWithDashes(totalSecs);
+    }
+  }
 }

@@ -7,16 +7,24 @@
 #define CS_PIN 10
 #define CLK_PIN 13
 
+// Potentiometer pin
+#define POT_PIN A0
+
 // Two MAX7219 modules, chained
 LedControl lc = LedControl(DIN_PIN, CLK_PIN, CS_PIN, 2);
 
 // RTC
 RTC_DS3231 rtc;
 
+// Track brightness changes
+int lastBrightness = -1;
+
 void setup() {
+  Serial.begin(9600);
+
   for (int display = 0; display < 2; display++) {
     lc.shutdown(display, false);    // Wake up
-    lc.setIntensity(display, 2);    // Brightness (0–15)
+    lc.setIntensity(display, 2);    // Temporary brightness
     lc.clearDisplay(display);       // Clear
   }
 
@@ -26,8 +34,22 @@ void setup() {
 }
 
 void loop() {
-  DateTime now = rtc.now();
+  // --- Brightness control ---
+  int potValue = analogRead(POT_PIN);                // 0–1023
+  int brightness = map(potValue, 0, 1000, 0, 15);    // 0–15
 
+  // Update only if brightness changed
+  if (brightness != lastBrightness) {
+    for (int display = 0; display < 2; display++) {
+      lc.setIntensity(display, brightness);
+    }
+    Serial.print("Brightness: ");
+    Serial.println(brightness);
+    lastBrightness = brightness;
+  }
+
+  // --- Time and date ---
+  DateTime now = rtc.now();
   int tenths = (millis() % 1000) / 100; // 0–9 tenths
 
   displayDate(0, now.day(), now.month(), now.year());
@@ -72,8 +94,7 @@ void displayTime(int display, int hours, int minutes, int seconds, int tenths) {
 
   // Seconds
   lc.setDigit(display, 2, seconds / 10, false);
-  // Ones of seconds with decimal point
-  lc.setDigit(display, 1, seconds % 10, true);
+  lc.setDigit(display, 1, seconds % 10, true); // Decimal point on
 
   // Tenths, no decimal
   lc.setDigit(display, 0, tenths, false);
