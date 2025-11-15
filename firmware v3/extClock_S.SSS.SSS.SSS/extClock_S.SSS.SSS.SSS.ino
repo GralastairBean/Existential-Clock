@@ -6,63 +6,53 @@
 #define CS_PIN 10
 #define CLK_PIN 13
 
-LedControl lc = LedControl(DIN_PIN, CLK_PIN, CS_PIN, 2); // 2 modules = 16 digits
+// Potentiometer pin
+#define POT_PIN A0
+
+LedControl lc = LedControl(DIN_PIN, CLK_PIN, CS_PIN, 2);
 RTC_DS3231 rtc;
 
-// Example "death date"
-DateTime deathTime(2025, 11, 16, 0, 0, 0); //(year, month, day, hour, minute, second);
+// Add death date and time below
+DateTime deathTime(2025, 11, 16, 0, 0, 0); //(year, month, day, hour, minute, second)
+
+// Track brightness changes
+int lastBrightness = -1;
+
+// Track time updates
+unsigned long lastUpdate = 0;
 
 void setup() {
-  if (!rtc.begin()) {
-    while (true); // Stop if RTC not found
-  }
+  Serial.begin(9600);
 
+  if (!rtc.begin()) {
+    while (1);
+  }
   for (int module = 0; module < 2; module++) {
     lc.shutdown(module, false);
-    lc.setIntensity(module, 2);
+    lc.setIntensity(module, 3);   // Temporary startup brightness
     lc.clearDisplay(module);
   }
 }
 
-// Display number with "comma" separators using decimal points
-// Dot goes on the LEFT digit of each 3‑digit group
-// Internal zeros are preserved, leading zeros are blanked
-void displayNumberWithCommas(unsigned long long value) {
-  // Special case: exact zero
-  if (value == 0) {
-    for (int m = 0; m < 2; m++) {
-      lc.clearDisplay(m);
-    }
-    lc.setDigit(1, 0, 0, false); // just "0"
-    return;
-  }
+// Show number with dots every 3 digits
+void displayNumberWithDots(unsigned long long number) {
+  int digitCount = 0; // Total digits we've processed
 
-  int groupCount = 0;      // digits in the current group of 3
-  bool markNext = false;   // whether next digit should get the decimal point
-  bool started = false;    // whether we’ve started printing non-blanks
+  for (int module = 1; module >= 0; module--) { // Loop through the two modules (displays)
+    for (int i = 0; i < 8; i++) { // Loop through each digit in the module
+      if (number > 0 || digitCount == 0) {
+        // Extract the current digit
+        int digit = number % 10;
+        number /= 10;
+        digitCount++;
 
-  for (int module = 1; module >= 0; module--) {
-    for (int i = 0; i < 8; i++) {
-      if (value > 0 || started) {
-        if (value > 0) {
-          int digit = value % 10;
-          value /= 10;
-          groupCount++;
-          started = true;
+        // Enable the decimal point **before** every third digit (except the first group)
+        bool showDot = ((digitCount - 1) % 3 == 0) && (digitCount > 1);
 
-          lc.setDigit(module, i, digit, markNext);
-          markNext = false;
-
-          if (groupCount == 3 && value > 0) {
-            groupCount = 0;
-            markNext = true;
-          }
-        } else {
-          // past the last digit, fill with blanks
-          lc.setChar(module, i, ' ', false);
-        }
+        // Display the digit with or without the decimal point
+        lc.setDigit(module, i, digit, showDot);
       } else {
-        // if nothing has started, blank it
+        // Blank out unused segments
         lc.setChar(module, i, ' ', false);
       }
     }
@@ -70,15 +60,35 @@ void displayNumberWithCommas(unsigned long long value) {
 }
 
 void loop() {
-  DateTime now = rtc.now();
+  // --- Brightness control ---
+  int potValue = analogRead(POT_PIN);                 // 0–1023
+  int brightness = map(potValue, 0, 1000, 0, 15);     // 0–15
 
-  if (now >= deathTime) {
-    displayNumberWithCommas(0);
-  } else {
-    TimeSpan remaining = deathTime - now;
-    unsigned long long totalSecs = remaining.totalseconds();
-    displayNumberWithCommas(totalSecs);
+  if (brightness != lastBrightness) {
+    for (int module = 0; module < 2; module++) {
+      lc.setIntensity(module, brightness);
+    }
+    Serial.print("Brightness: ");
+    Serial.println(brightness);
+    lastBrightness = brightness;
   }
 
-  delay(1000);
+  // --- Countdown update once per second ---
+  unsigned long currentMillis = millis();
+  if (currentMillis - lastUpdate >= 1000) {
+    lastUpdate = currentMillis;
+
+    DateTime now = rtc.now();
+
+    if (now >= deathTime) {
+      lc.clearDisplay(0);
+      lc.clearDisplay(1);
+      lc.setChar(1, 7, '0', false);
+    } else {
+      TimeSpan remaining = deathTime - now;
+      unsigned long long totalSecs = remaining.totalseconds();
+
+      displayNumberWithDots(totalSecs);
+    }
+  }
 }
