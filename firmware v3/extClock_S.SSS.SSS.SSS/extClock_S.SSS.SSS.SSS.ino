@@ -13,7 +13,7 @@ LedControl lc = LedControl(DIN_PIN, CLK_PIN, CS_PIN, 2);
 RTC_DS3231 rtc;
 
 // Add death date and time below
-DateTime deathTime(2025, 11, 16, 0, 0, 0); //(year, month, day, hour, minute, second)
+DateTime deathTime(2025, 11, 15, 20, 0, 0); //(year, month, day, hour, minute, second)
 
 // Track brightness changes
 int lastBrightness = -1;
