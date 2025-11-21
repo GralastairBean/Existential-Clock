@@ -10,7 +10,7 @@ float smoothLight = 300.0;  // initial low‑med value for smoothing
 void setup() {
   lc.shutdown(0,false);
   lc.clearDisplay(0);
-  Serial.begin(9600);
+  // Serial.begin(9600); //uncomment to allow serial debug
 }
 
 void displayNumber(int num) {
