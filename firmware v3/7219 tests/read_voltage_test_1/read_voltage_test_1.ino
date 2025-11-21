@@ -5,7 +5,7 @@ const int analogPin = A0;   // voltage input pin
 
 void setup() {
   lc.shutdown(0,false);
-  lc.setIntensity(0,1);
+  lc.setIntensity(0,15);
   lc.clearDisplay(0);
 }
 
