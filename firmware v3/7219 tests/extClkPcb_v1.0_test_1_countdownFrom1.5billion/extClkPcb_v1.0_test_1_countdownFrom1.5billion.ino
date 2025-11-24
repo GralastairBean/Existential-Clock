@@ -39,7 +39,7 @@ void displayNumber(unsigned long val) {
 
 void loop() {
   unsigned long now = millis();
-  if (now - lastTick >= 50) {
+  if (now - lastTick >= 1000) {
     lastTick = now;
     displayNumber(n);
     if (n > 0) n--;
