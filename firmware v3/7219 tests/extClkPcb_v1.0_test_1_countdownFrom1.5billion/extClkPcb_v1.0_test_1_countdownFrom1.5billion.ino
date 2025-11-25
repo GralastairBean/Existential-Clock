@@ -25,7 +25,7 @@ void displayNumber(unsigned long val) {
     int d = digits[i];
     int dev = (11 - i) / 8;
     int pos = (11 - i) % 8;
-    bool dp = (i % 3 == 0 && i != 11); // adjust as needed
+    bool dp = (i % 3 == 0 && i != 0);
 
     if (leading && d == 0) {
       lc.setChar(dev,pos,' ',false);
