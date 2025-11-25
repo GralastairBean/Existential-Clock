@@ -1,5 +1,5 @@
 // All Up Test of PCB v1.0
-// Auto-brightness control via photo-resistor on A1 Arduino pin
+// Auto‑brightness control via photo‑resistor on A1 Arduino pin
 // Prints brightness data to serial for debug
 // RTC calculated time to live
 
@@ -17,6 +17,7 @@ DateTime deathTime(2073, 11, 22, 00, 00, 00);  // target timestamp
 unsigned long lastTick = 0;
 unsigned long prevBright = 0;
 float smoothLight = 300.0;
+int currentBrightness = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -41,6 +42,9 @@ void displayNumber(unsigned long long val) {
 
   bool leading = true;
   for (int i = 11; i >= 0; i--) {
+    // skip leftmost two positions to reserve for brightness
+    if (i == 11 || i == 10) continue;
+
     int d = digits[i];
     int dev = (11 - i) / 8;
     int pos = (11 - i) % 8;
@@ -53,6 +57,13 @@ void displayNumber(unsigned long long val) {
       leading = false;
     }
   }
+
+  // show brightness on the two leftmost digits
+  int bVal = currentBrightness;
+  int b0 = bVal % 10;
+  int b1 = (bVal / 10) % 10;
+lc.setDigit(0, 0, b1, false);
+lc.setDigit(0, 1, b0, false);
 }
 
 void loop() {
@@ -64,11 +75,12 @@ void loop() {
     int rawLight = analogRead(ldrPin);
     smoothLight = 0.9f * smoothLight + 0.1f * rawLight;
 
-    float norm = (smoothLight - 300.0f) / (1023.0f - 300.0f); //second term (300) = lower cutoff (brightness = 0}
+    float norm = (smoothLight - 300.0f) / (1023.0f - 300.0f); // second term (300) = lower cutoff (brightness = 0)
     if (norm < 0) norm = 0;
     if (norm > 1) norm = 1;
-    float shaped = pow(norm, 2.0f); //lower value=less aggressive dim curve
+    float shaped = pow(norm, 2.0f); // lower value = less aggressive dim curve
     int brightness = (int)(shaped * 15.0f);
+    currentBrightness = brightness;
 
     lc.setIntensity(0, brightness);
     lc.setIntensity(1, brightness);
@@ -93,7 +105,7 @@ void loop() {
 
     TimeSpan remaining = deathTime - current;
     unsigned long long totalSecs = remaining.totalseconds();
-
     displayNumber(totalSecs);
+
   }
 }
