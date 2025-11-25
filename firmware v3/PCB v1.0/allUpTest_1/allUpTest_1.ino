@@ -64,10 +64,10 @@ void loop() {
     int rawLight = analogRead(ldrPin);
     smoothLight = 0.9f * smoothLight + 0.1f * rawLight;
 
-    float norm = (smoothLight - 100.0f) / (1023.0f - 100.0f);
+    float norm = (smoothLight - 300.0f) / (1023.0f - 300.0f); //second term (300) = lower cutoff (brightness = 0}
     if (norm < 0) norm = 0;
     if (norm > 1) norm = 1;
-    float shaped = pow(norm, 1.4f);
+    float shaped = pow(norm, 2.0f); //lower value=less aggressive dim curve
     int brightness = (int)(shaped * 15.0f);
 
     lc.setIntensity(0, brightness);
