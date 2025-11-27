@@ -51,8 +51,8 @@ void displayNumber(unsigned long long val) {
 void loop() {
   unsigned long now = millis();
 
-  // countdown update once per second
-  if (now - lastTick >= 1000) {
+  // countdown update every 500ms to keep good time (no drift) will still only tick once per second
+  if (now - lastTick >= 500) {
     lastTick = now;
 
     DateTime current = rtc.now();
