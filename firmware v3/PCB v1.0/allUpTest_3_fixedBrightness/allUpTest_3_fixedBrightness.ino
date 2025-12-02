@@ -9,6 +9,8 @@
 LedControl lc = LedControl(7,6,5,2); // Arduino pins: D7=DIN, D6=CLK, D5=LOAD/CS, 2=2x7219 driver chips
 RTC_DS3231 rtc;
 
+int fixedBrightness = 0; // set the fixed brightness: 0 (dimmest) to 15 (brightest
+
 DateTime deathTime(2073, 11, 22, 00, 00, 00);  // target timestamp
 unsigned long lastTick = 0;
 
@@ -20,7 +22,7 @@ void setup() {
   for (int i = 0; i < 2; i++) {
     lc.shutdown(i, false);
     lc.clearDisplay(i);
-    lc.setIntensity(i, 0);  // fixed brightness 0 (dimmest)
+    lc.setIntensity(i, fixedBrightness);  
   }
 }
 
