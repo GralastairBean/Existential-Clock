@@ -2,6 +2,8 @@
 // Fixed brightness (no photo‑resistor)
 // RTC calculated time to live
 
+#define FIRMWARE_VERSION "0.1.0"
+
 #include <Wire.h>
 #include <RTClib.h>
 #include "LedControl.h"
@@ -19,6 +21,8 @@ void setup() {
   if (!rtc.begin()) {
     while (1);
   }
+  Serial.print("Existential Clock Firmware Version ");
+  Serial.println(FIRMWARE_VERSION);
 
   TimeSpan remaining = deathTime - rtc.now();
 
