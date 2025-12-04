@@ -19,7 +19,9 @@ unsigned long lastTick = 0;
 void setup() {
   Serial.begin(9600);
   if (!rtc.begin()) {
-    while (1);
+  Serial.println("RTC init fail, check connections");
+  delay(1000);  // give time to send before blocking
+  while (1);
   }
   Serial.print("Existential Clock Firmware Version ");
   Serial.println(FIRMWARE_VERSION);
