@@ -2,7 +2,7 @@
 // Fixed brightness (no photo‑resistor)
 // RTC calculated time to live
 
-#define FIRMWARE_VERSION "0.1.0"
+#define FIRMWARE_VERSION "0.1.0" //change this at each new release
 
 #include <Wire.h>
 #include <RTClib.h>
@@ -13,7 +13,7 @@ RTC_DS3231 rtc;
 
 int fixedBrightness = 0; // set the fixed brightness: 0 (dimmest) to 15 (brightest
 
-DateTime deathTime(2073, 11, 22, 00, 00, 00);  // target timestamp
+DateTime deathTime(2073, 11, 22, 00, 00, 00);  // (year, month, day, hour...) of death
 unsigned long lastTick = 0;
 
 void setup() {
