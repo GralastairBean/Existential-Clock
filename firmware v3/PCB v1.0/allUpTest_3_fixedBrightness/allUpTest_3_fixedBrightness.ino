@@ -6,7 +6,7 @@
 #include <RTClib.h>
 #include "LedControl.h"
 
-LedControl lc = LedControl(7,6,5,2); // Arduino pins: D7=DIN, D6=CLK, D5=LOAD/CS, 2=2x7219 driver chips
+LedControl lc = LedControl(7, 6, 5, 2); // Arduino pins: D7=DIN, D6=CLK, D5=LOAD/CS, 2=2x7219 driver chips
 RTC_DS3231 rtc;
 
 int fixedBrightness = 0; // set the fixed brightness: 0 (dimmest) to 15 (brightest
@@ -15,14 +15,36 @@ DateTime deathTime(2073, 11, 22, 00, 00, 00);  // target timestamp
 unsigned long lastTick = 0;
 
 void setup() {
+  Serial.begin(9600);
   if (!rtc.begin()) {
     while (1);
   }
 
+  TimeSpan remaining = deathTime - rtc.now();
+
+  Serial.print("RTC Time: ");
+  Serial.print(rtc.now().day()); Serial.print("/");
+  Serial.print(rtc.now().month()); Serial.print("/");
+  Serial.print(rtc.now().year()); Serial.print(" ");
+  Serial.print(rtc.now().hour()); Serial.print(":");
+  Serial.print(rtc.now().minute()); Serial.print(":");
+  Serial.println(rtc.now().second());
+
+  Serial.print("Death Time: ");
+  Serial.print(deathTime.day()); Serial.print("/");
+  Serial.print(deathTime.month()); Serial.print("/");
+  Serial.print(deathTime.year()); Serial.print(" ");
+  Serial.print(deathTime.hour()); Serial.print(":");
+  Serial.print(deathTime.minute()); Serial.print(":");
+  Serial.println(deathTime.second());
+
+  Serial.print("Seconds to death: ");
+  Serial.println((unsigned long)remaining.totalseconds());
+
   for (int i = 0; i < 2; i++) {
     lc.shutdown(i, false);
     lc.clearDisplay(i);
-    lc.setIntensity(i, fixedBrightness);  
+    lc.setIntensity(i, fixedBrightness);
   }
 }
 
