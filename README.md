@@ -1,5 +1,5 @@
 part,USD,qty,total,link
------------------------
+
 case_front, $0.48 ,1, $0.48 ,
 case_back, $0.25 ,1, $0.25 ,
 USB TYPE-C conversion board 2.54MM CC1 CC2 5.1K pull-down resistor connection, $0.68 ,1, $0.68 ,https://www.aliexpress.com/item/1005005777382409.html?spm=a2g0o.order_list.order_list_main.11.48fd1802CWoXaq
@@ -16,5 +16,5 @@ m3x6mm bolts  (to fasten DISPLAY pcb to case), $0.04 ,4, $0.16 ,
 m3x6mm bolts  (to fasten USB-C breakout to case), $0.04 ,2, $0.08 ,
 m3x6mm bolts  (to fasten back and front case together), $0.04 ,2, $0.08 ,
 m3x5mm bolts  (to fasten CONTROL pcb to case), $0.04 ,2, $0.08 ,
------------------------
+
 total cost,,34, $32.97 ,
