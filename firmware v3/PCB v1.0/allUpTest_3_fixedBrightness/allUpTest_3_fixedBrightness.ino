@@ -2,7 +2,7 @@
 // Fixed brightness (no photo‑resistor)
 // RTC calculated time to live
 
-#define FIRMWARE_VERSION "0.1.0" //change this at each new release
+#define FIRMWARE_VERSION "0.2.0" //change this at each new release
 
 #include <Wire.h>
 #include <RTClib.h>
@@ -14,7 +14,6 @@ RTC_DS3231 rtc;
 int fixedBrightness = 0; // set the fixed brightness: 0 (dimmest) to 15 (brightest
 
 DateTime deathTime(2073, 11, 22, 00, 00, 00);  // (year, month, day, hour...) of death
-unsigned long lastTick = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -79,21 +78,23 @@ void displayNumber(unsigned long long val) {
 }
 
 void loop() {
-  unsigned long now = millis();
+  static int lastSecond = -1;
 
-  // countdown update every 500ms to keep good time (no drift) will still only tick once per second
-  if (now - lastTick >= 500) {
-    lastTick = now;
+  DateTime current = rtc.now();
+  int sec = current.second();
 
-    DateTime current = rtc.now();
+  if (sec != lastSecond) {  // only run once per new RTC second
+    lastSecond = sec;
 
     if (current >= deathTime) {
       for (int i = 0; i < 2; i++) lc.clearDisplay(i);
-      return;
+      while (1);  // stop execution permanently
     }
 
     TimeSpan remaining = deathTime - current;
     unsigned long long totalSecs = remaining.totalseconds();
     displayNumber(totalSecs);
   }
+
+  delay(50);  // modest polling rate for I²C, adjust 20–100 ms if desired
 }
